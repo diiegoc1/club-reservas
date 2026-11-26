@@ -1,0 +1,29 @@
+{
+  "equipo": "Club Reservas",
+  "diasPorSprint": 3,
+  "puntosEnBacklog": 45,
+  "nota": "Sprints comprimidos de 3 jornadas por el tiempo de la cursada. El proceso y los artefactos son los mismos que en un sprint de dos semanas.",
+  "sprints": [
+    {
+      "numero": 1,
+      "objetivo": "Login, ver horarios libres y reservar",
+      "comprometidos": 11,
+      "restante": [11, 11, 11],
+      "completados": 0
+    },
+    {
+      "numero": 2,
+      "objetivo": "Mis reservas, cancelación y confirmación",
+      "comprometidos": 10,
+      "restante": [10, 10, 10],
+      "completados": 0
+    },
+    {
+      "numero": 3,
+      "objetivo": "Panel del encargado y estadísticas",
+      "comprometidos": 11,
+      "restante": [11, 11, 11],
+      "completados": 0
+    }
+  ]
+}
