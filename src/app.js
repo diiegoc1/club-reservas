@@ -60,14 +60,27 @@ function renderFecha() {
   refs.fecha.value = fecha;
 }
 
+/** Cambia de cancha y, si viene del teclado, deja el foco en el tab elegido. */
+function activarCancha(id, enfocar = false) {
+  canchaId = id;
+  renderCanchas();
+  renderGrilla();
+  if (enfocar) {
+    refs.canchas.querySelector(`[data-cancha="${id}"]`)?.focus();
+  }
+}
+
 function renderCanchas() {
   refs.canchas.innerHTML = CANCHAS.map(
     (cancha) => `
       <button
         type="button"
+        id="tab-${cancha.id}"
         class="cancha ${cancha.id === canchaId ? "cancha--activa" : ""}"
         role="tab"
         aria-selected="${cancha.id === canchaId}"
+        aria-controls="grilla"
+        tabindex="${cancha.id === canchaId ? "0" : "-1"}"
         data-cancha="${cancha.id}"
       >
         <span class="cancha__dot" style="--c:${cancha.color}"></span>
@@ -77,11 +90,32 @@ function renderCanchas() {
     `
   ).join("");
 
+  // Un solo tab entra en el orden de tabulación (patrón roving tabindex).
+  refs.grilla.setAttribute("aria-labelledby", `tab-${canchaId}`);
+
   refs.canchas.querySelectorAll("[data-cancha]").forEach((boton) => {
-    boton.addEventListener("click", () => {
-      canchaId = boton.dataset.cancha;
-      renderCanchas();
-      renderGrilla();
+    boton.addEventListener("click", () =>
+      activarCancha(boton.dataset.cancha, true)
+    );
+    boton.addEventListener("keydown", (evento) => {
+      const actual = CANCHAS.findIndex((c) => c.id === boton.dataset.cancha);
+      if (actual === -1) return;
+
+      let destino = actual;
+      if (evento.key === "ArrowRight") {
+        destino = (actual + 1) % CANCHAS.length;
+      } else if (evento.key === "ArrowLeft") {
+        destino = (actual - 1 + CANCHAS.length) % CANCHAS.length;
+      } else if (evento.key === "Home") {
+        destino = 0;
+      } else if (evento.key === "End") {
+        destino = CANCHAS.length - 1;
+      } else {
+        return;
+      }
+
+      evento.preventDefault();
+      activarCancha(CANCHAS[destino].id, true);
     });
   });
 }
