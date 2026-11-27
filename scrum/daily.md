@@ -5,10 +5,10 @@
 
 ## Día 1 · 26/11/2026
 
-- **Diiego:** fijó el alcance del Sprint 1, probó el login y aprobó el merge del PR #13.
-- **Hy4:** implementó HU-3 (login con número de socio y PIN) en la rama `hu-3-login`; PR #13 mergeado a `main`.
-- **OpenCode:** revisó el PR #13 contra la DoD con 13 verificaciones en navegador real, documentó la revisión en el PR y actualizó el tablero.
-- **Bloqueos:** ninguno. Siguiente: HU-1 (grilla) desde `main` actualizado.
+- **Diiego:** fijó el alcance del Sprint 1, probó el login y aprobó los merges de los PR #13 y #14.
+- **Hy4:** implementó HU-3 (login con número de socio y PIN) y HU-1 (tabs accesibles y grilla como tabpanel); PR #13 y #14 mergeados a `main`.
+- **OpenCode:** revisó ambos PR contra la DoD con pruebas en navegador real (13/13 y 28/28), documentó cada revisión en su PR y actualizó el tablero.
+- **Bloqueos:** ninguno. Siguiente: HU-2 (reservar un horario libre).
 
 ## Día 2 · [fecha]
 
