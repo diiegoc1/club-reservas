@@ -4,6 +4,11 @@ Sistema de reservas de canchas para el **Club Unión**. Proyecto de **Prácticas
 
 > Para los socios del Club Unión, que hoy reservan las canchas por WhatsApp y se pisan los horarios, **Club Reservas** es una página donde ven los turnos libres y reservan en dos clics. A diferencia de una planilla compartida, avisa al encargado y no deja reservar un horario ocupado.
 
+- **Página publicada:** https://diiegoc1.github.io/club-reservas/
+- **Repositorio:** https://github.com/diiegoc1/club-reservas
+- **Tablero:** https://github.com/users/diiegoc1/projects/3
+- **Historias:** [#1 a #12](https://github.com/diiegoc1/club-reservas/issues)
+
 ## Estado del proyecto
 
 | Sprint | Objetivo | Puntos | Estado |
@@ -34,9 +39,18 @@ Regla: **nadie mergea su propio PR**. Hy4 abre el PR, lo revisan Diiego y OpenCo
 
 [GitHub Project #3](https://github.com/users/diiegoc1/projects/3)
 
-Columnas: **Backlog · Para hacer · En curso · En revisión · Hecho**.
+Columnas: **Todo · In Progress · Done**.
 
-Campos: **Puntos** (número) y **Sprint** (iteración).
+Campos: **Puntos** (número) y **Sprint** (Sprint 1, Sprint 2, Sprint 3, Backlog).
+
+Las 12 historias ya están cargadas con sus puntos y su sprint:
+
+| Sprint | Historias | Puntos |
+|---|---|---|
+| Sprint 1 | [#1](https://github.com/diiegoc1/club-reservas/issues/1) · [#2](https://github.com/diiegoc1/club-reservas/issues/2) · [#3](https://github.com/diiegoc1/club-reservas/issues/3) | 11 |
+| Sprint 2 | [#4](https://github.com/diiegoc1/club-reservas/issues/4) · [#5](https://github.com/diiegoc1/club-reservas/issues/5) · [#10](https://github.com/diiegoc1/club-reservas/issues/10) | 10 |
+| Sprint 3 | [#6](https://github.com/diiegoc1/club-reservas/issues/6) · [#7](https://github.com/diiegoc1/club-reservas/issues/7) · [#9](https://github.com/diiegoc1/club-reservas/issues/9) · [#12](https://github.com/diiegoc1/club-reservas/issues/12) | 11 |
+| Backlog | [#8](https://github.com/diiegoc1/club-reservas/issues/8) · [#11](https://github.com/diiegoc1/club-reservas/issues/11) | 13 |
 
 ## Stack
 
