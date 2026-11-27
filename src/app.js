@@ -6,6 +6,7 @@ import {
   cargarEstado,
   formatearFecha,
   hoyISO,
+  login,
   logout,
   resetEstado,
   sumarDias,
@@ -24,6 +25,10 @@ const refs = {
   btnReset: document.querySelector("#btn-reset"),
   modalReserva: document.querySelector("#modal-reserva"),
   modalLogin: document.querySelector("#modal-login"),
+  formLogin: document.querySelector("#form-login"),
+  mlNumero: document.querySelector("#ml-numero"),
+  mlPin: document.querySelector("#ml-pin"),
+  mlError: document.querySelector("#ml-error"),
   mrTitulo: document.querySelector("#mr-titulo"),
   mrTexto: document.querySelector("#mr-texto"),
 };
@@ -116,9 +121,21 @@ function renderGrilla() {
   });
 }
 
+/** Abre el diálogo de login limpio y enfoca el número de socio. */
+function abrirLogin() {
+  refs.mlError.hidden = true;
+  refs.mlError.textContent = "";
+  refs.modalLogin.showModal();
+  refs.mlNumero.focus();
+}
+
 function renderSesion() {
   if (estado.sesion) {
     refs.btnLogin.textContent = `${estado.sesion.nombre} · Salir`;
+    refs.btnLogin.setAttribute(
+      "aria-label",
+      `Cerrar sesión de ${estado.sesion.nombre}`
+    );
     refs.btnLogin.classList.add("btn--user");
     refs.btnLogin.onclick = () => {
       logout(estado);
@@ -129,8 +146,34 @@ function renderSesion() {
   }
 
   refs.btnLogin.textContent = "Ingresar";
+  refs.btnLogin.setAttribute("aria-label", "Ingresar con mi número de socio");
   refs.btnLogin.classList.remove("btn--user");
-  refs.btnLogin.onclick = () => refs.modalLogin.showModal();
+  refs.btnLogin.onclick = abrirLogin;
+}
+
+/** Envía número y PIN a store.js. El PIN nunca se guarda en la sesión. */
+function enviarLogin(evento) {
+  evento.preventDefault();
+
+  const resultado = login(
+    estado,
+    refs.mlNumero.value.trim(),
+    refs.mlPin.value
+  );
+
+  if (!resultado.ok) {
+    refs.mlError.textContent = "Número o PIN incorrecto";
+    refs.mlError.hidden = false;
+    refs.mlPin.focus();
+    refs.mlPin.select();
+    return;
+  }
+
+  refs.mlError.hidden = true;
+  refs.mlError.textContent = "";
+  refs.formLogin.reset();
+  refs.modalLogin.close();
+  renderSesion();
 }
 
 function renderTodo() {
@@ -171,6 +214,11 @@ function init() {
     renderGrilla();
   });
 
+  refs.formLogin.addEventListener("submit", enviarLogin);
+  document.querySelectorAll("[data-cerrar-login]").forEach((boton) => {
+    boton.addEventListener("click", () => refs.modalLogin.close());
+  });
+
   refs.fecha.addEventListener("change", () => {
     if (!refs.fecha.value) return;
     fecha = refs.fecha.value;
@@ -186,7 +234,7 @@ function init() {
   });
 
   console.info(
-    "Club Reservas · Sprint 0. Datos demo en localStorage. Usá el botón del pie para reiniciar."
+    "Club Reservas · Sprint 1. Login disponible. Datos demo en localStorage. Usá el botón del pie para reiniciar."
   );
 }
 
