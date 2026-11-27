@@ -23,6 +23,9 @@
           <span class="brand__text">Club Reservas</span>
         </a>
         <nav class="topbar__nav" aria-label="Principal">
+          <button class="btn btn--ghost" id="btn-mis-reservas" type="button" hidden>
+            Mis reservas
+          </button>
           <button class="btn btn--ghost" id="btn-login" type="button">
             Ingresar
           </button>
@@ -44,6 +47,8 @@
           <span>⚡ Confirmación inmediata</span>
         </div>
       </section>
+
+      <p class="aviso" id="aviso" role="status" hidden></p>
 
       <section class="panel" aria-labelledby="titulo-disponibilidad">
         <div class="panel__head">
@@ -135,20 +140,43 @@
       aria-labelledby="mr-titulo"
       aria-describedby="mr-texto"
     >
-      <form method="dialog" class="modal__form">
+      <form class="modal__form" id="form-reserva" novalidate>
         <header class="modal__head">
-          <h2 id="mr-titulo">Reservar turno</h2>
-          <button class="icon-btn" value="cancel" aria-label="Cerrar">
+          <h2 id="mr-titulo">Confirmar reserva</h2>
+          <button
+            class="icon-btn"
+            type="button"
+            data-cerrar-reserva
+            aria-label="Cerrar"
+          >
             ×
           </button>
         </header>
-        <p class="muted" id="mr-texto"></p>
-        <p class="nota">
-          🚧 La reserva se habilita en el Sprint 1. La grilla y los estados ya
-          están listos.
-        </p>
+        <p class="muted" id="mr-texto">Revisá los datos de tu turno.</p>
+        <dl class="resumen">
+          <div>
+            <dt>Cancha</dt>
+            <dd id="mr-cancha"></dd>
+          </div>
+          <div>
+            <dt>Fecha</dt>
+            <dd id="mr-fecha"></dd>
+          </div>
+          <div>
+            <dt>Hora</dt>
+            <dd id="mr-hora"></dd>
+          </div>
+          <div>
+            <dt>Socio</dt>
+            <dd id="mr-socio"></dd>
+          </div>
+        </dl>
+        <p class="error" id="mr-error" role="alert" hidden></p>
         <footer class="modal__foot">
-          <button class="btn" value="cancel">Cerrar</button>
+          <button class="btn btn--ghost" type="button" data-cerrar-reserva>
+            Cancelar
+          </button>
+          <button class="btn" type="submit">Confirmar reserva</button>
         </footer>
       </form>
     </dialog>
@@ -206,6 +234,27 @@
             Cancelar
           </button>
           <button class="btn" type="submit">Ingresar</button>
+        </footer>
+      </form>
+    </dialog>
+
+    <dialog
+      class="modal"
+      id="modal-mis-reservas"
+      aria-labelledby="mm-titulo"
+      aria-describedby="mm-texto"
+    >
+      <form method="dialog" class="modal__form">
+        <header class="modal__head">
+          <h2 id="mm-titulo">Mis reservas</h2>
+          <button class="icon-btn" value="cancel" aria-label="Cerrar">
+            ×
+          </button>
+        </header>
+        <p class="muted" id="mm-texto">Tus turnos confirmados.</p>
+        <ul class="lista-reservas" id="mm-lista"></ul>
+        <footer class="modal__foot">
+          <button class="btn" value="cancel">Cerrar</button>
         </footer>
       </form>
     </dialog>
