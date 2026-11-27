@@ -158,22 +158,53 @@
       aria-labelledby="ml-titulo"
       aria-describedby="ml-texto"
     >
-      <form method="dialog" class="modal__form">
+      <form class="modal__form" id="form-login" novalidate>
         <header class="modal__head">
           <h2 id="ml-titulo">Ingresar</h2>
-          <button class="icon-btn" value="cancel" aria-label="Cerrar">
+          <button
+            class="icon-btn"
+            type="button"
+            data-cerrar-login
+            aria-label="Cerrar"
+          >
             ×
           </button>
         </header>
         <p class="muted" id="ml-texto">
-          El login por número de socio se habilita en el Sprint 1.
+          Ingresá con tu número de socio y tu PIN para reservar a tu nombre.
         </p>
+        <div class="campo">
+          <label for="ml-numero">Número de socio</label>
+          <input
+            id="ml-numero"
+            name="numero"
+            type="text"
+            inputmode="numeric"
+            autocomplete="username"
+            required
+          />
+        </div>
+        <div class="campo">
+          <label for="ml-pin">PIN</label>
+          <input
+            id="ml-pin"
+            name="pin"
+            type="password"
+            inputmode="numeric"
+            autocomplete="current-password"
+            required
+          />
+        </div>
+        <p class="error" id="ml-error" role="alert" hidden></p>
         <p class="nota">
           Socios de prueba: <b>1001</b> / <b>1234</b> · Encargado:
           <b>1004</b> / <b>1234</b>
         </p>
         <footer class="modal__foot">
-          <button class="btn" value="cancel">Cerrar</button>
+          <button class="btn btn--ghost" type="button" data-cerrar-login>
+            Cancelar
+          </button>
+          <button class="btn" type="submit">Ingresar</button>
         </footer>
       </form>
     </dialog>
