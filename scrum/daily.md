@@ -3,12 +3,12 @@
 > Tres preguntas: ¿qué hice?, ¿qué voy a hacer?, ¿hay algo que me frene?
 > El Scrum Master anota los bloqueos. No se resuelven acá: se hablan después con los que hagan falta.
 
-## Día 1 · [fecha]
+## Día 1 · 26/11/2026
 
-- **Diiego:** ...
-- **Hy4:** ...
-- **OpenCode:** ...
-- **Bloqueos:** ...
+- **Diiego:** fijó el alcance del Sprint 1, probó el login y aprobó el merge del PR #13.
+- **Hy4:** implementó HU-3 (login con número de socio y PIN) en la rama `hu-3-login`; PR #13 mergeado a `main`.
+- **OpenCode:** revisó el PR #13 contra la DoD con 13 verificaciones en navegador real, documentó la revisión en el PR y actualizó el tablero.
+- **Bloqueos:** ninguno. Siguiente: HU-1 (grilla) desde `main` actualizado.
 
 ## Día 2 · [fecha]
 
