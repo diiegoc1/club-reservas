@@ -8,6 +8,8 @@ import {
   hoyISO,
   login,
   logout,
+  reservar,
+  reservasDeSocio,
   resetEstado,
   sumarDias,
   turnosDelDia,
@@ -22,20 +24,38 @@ const refs = {
   btnSiguiente: document.querySelector("#dia-siguiente"),
   btnHoy: document.querySelector("#btn-hoy"),
   btnLogin: document.querySelector("#btn-login"),
+  btnMisReservas: document.querySelector("#btn-mis-reservas"),
   btnReset: document.querySelector("#btn-reset"),
+  aviso: document.querySelector("#aviso"),
   modalReserva: document.querySelector("#modal-reserva"),
+  formReserva: document.querySelector("#form-reserva"),
+  mrCancha: document.querySelector("#mr-cancha"),
+  mrFecha: document.querySelector("#mr-fecha"),
+  mrHora: document.querySelector("#mr-hora"),
+  mrSocio: document.querySelector("#mr-socio"),
+  mrError: document.querySelector("#mr-error"),
   modalLogin: document.querySelector("#modal-login"),
   formLogin: document.querySelector("#form-login"),
   mlNumero: document.querySelector("#ml-numero"),
   mlPin: document.querySelector("#ml-pin"),
   mlError: document.querySelector("#ml-error"),
-  mrTitulo: document.querySelector("#mr-titulo"),
-  mrTexto: document.querySelector("#mr-texto"),
+  modalMisReservas: document.querySelector("#modal-mis-reservas"),
+  mmLista: document.querySelector("#mm-lista"),
 };
 
 let estado = cargarEstado();
 let fecha = hoyISO();
 let canchaId = CANCHAS[0]?.id ?? "";
+let turnoPendiente = null; // Turno elegido sin sesión: se retoma después del login.
+let turnoConfirmado = null; // Turno que muestra el modal de confirmación.
+
+const ERRORES_RESERVA = {
+  ocupado: "Ese horario ya está ocupado",
+  bloqueado: "Ese horario está bloqueado",
+  duplicado: "Ya tenés una reserva en ese horario",
+  cancha_invalida: "No se pudo reservar ese turno. Probá de nuevo.",
+  hora_invalida: "No se pudo reservar ese turno. Probá de nuevo.",
+};
 
 const escapar = (valor) =>
   String(valor).replace(/[&<>"']/g, (caracter) => {
@@ -164,6 +184,8 @@ function abrirLogin() {
 }
 
 function renderSesion() {
+  refs.btnMisReservas.hidden = !estado.sesion;
+
   if (estado.sesion) {
     refs.btnLogin.textContent = `${estado.sesion.nombre} · Salir`;
     refs.btnLogin.setAttribute(
@@ -208,6 +230,13 @@ function enviarLogin(evento) {
   refs.formLogin.reset();
   refs.modalLogin.close();
   renderSesion();
+
+  // Retomamos el turno que eligió antes de pedirle el login.
+  if (turnoPendiente) {
+    const turno = turnoPendiente;
+    turnoPendiente = null;
+    mostrarConfirmacion(turno);
+  }
 }
 
 function renderTodo() {
@@ -223,12 +252,97 @@ function cambiarDia(delta) {
   renderGrilla();
 }
 
-function abrirReserva(hora) {
-  const cancha = CANCHAS.find((c) => c.id === canchaId);
+function renderAviso(texto) {
+  refs.aviso.textContent = texto;
+  refs.aviso.hidden = false;
+}
 
-  refs.mrTitulo.textContent = `${cancha?.nombre ?? "Cancha"} · ${hora}`;
-  refs.mrTexto.textContent = `${formatearFecha(fecha)}. En el Sprint 1 vas a poder confirmar la reserva con tu número de socio.`;
+/** Guarda el turno elegido y pide login, o muestra directamente la confirmación. */
+function abrirReserva(hora) {
+  const turno = { canchaId, fecha, hora };
+
+  if (!estado.sesion) {
+    turnoPendiente = turno;
+    abrirLogin();
+    return;
+  }
+
+  refs.aviso.hidden = true;
+  mostrarConfirmacion(turno);
+}
+
+function mostrarConfirmacion(turno) {
+  const cancha = CANCHAS.find((c) => c.id === turno.canchaId);
+  turnoConfirmado = turno;
+
+  refs.mrCancha.textContent = cancha?.nombre ?? "Cancha";
+  refs.mrFecha.textContent = formatearFecha(turno.fecha);
+  refs.mrHora.textContent = turno.hora;
+  refs.mrSocio.textContent = `${estado.sesion.nombre} (${estado.sesion.numero})`;
+  refs.mrError.hidden = true;
+  refs.mrError.textContent = "";
   refs.modalReserva.showModal();
+}
+
+/** Confirma con store.js; la UI solo muestra el resultado. */
+function enviarReserva(evento) {
+  evento.preventDefault();
+  if (!turnoConfirmado) return;
+  const { hora } = turnoConfirmado;
+
+  // Otra pestaña pudo cambiar el estado mientras el modal estaba abierto.
+  estado = cargarEstado();
+
+  const resultado = reservar(estado, {
+    ...turnoConfirmado,
+    socio: estado.sesion,
+  });
+
+  if (!resultado.ok) {
+    if (resultado.error === "sin_sesion") {
+      refs.modalReserva.close();
+      turnoPendiente = turnoConfirmado;
+      turnoConfirmado = null;
+      renderSesion();
+      abrirLogin();
+      return;
+    }
+
+    refs.mrError.textContent =
+      ERRORES_RESERVA[resultado.error] ??
+      "No se pudo reservar ese turno. Probá de nuevo.";
+    refs.mrError.hidden = false;
+    renderGrilla();
+    return;
+  }
+
+  refs.modalReserva.close();
+  turnoConfirmado = null;
+  renderGrilla();
+  renderAviso(
+    `Reserva confirmada: ${refs.mrCancha.textContent}, ${refs.mrFecha.textContent} a las ${hora}.`
+  );
+}
+
+function renderMisReservas() {
+  if (!estado.sesion) return;
+
+  const reservas = reservasDeSocio(estado, estado.sesion.numero);
+  refs.mmLista.innerHTML = reservas.length
+    ? reservas
+        .map((reserva) => {
+          const cancha = CANCHAS.find((c) => c.id === reserva.canchaId);
+          return `
+            <li>
+              <strong>${escapar(cancha?.nombre ?? reserva.canchaId)}</strong>
+              <span>${escapar(formatearFecha(reserva.fecha))} · ${escapar(reserva.hora)}</span>
+            </li>
+          `;
+        })
+        .join("")
+    : "<li>Todavía no tenés reservas.</li>";
+
+  refs.modalMisReservas.showModal();
 }
 
 function init() {
@@ -252,6 +366,20 @@ function init() {
   document.querySelectorAll("[data-cerrar-login]").forEach((boton) => {
     boton.addEventListener("click", () => refs.modalLogin.close());
   });
+  refs.modalLogin.addEventListener("close", () => {
+    // Cancelar o Escape descarta el turno que estaba esperando login.
+    if (!estado.sesion) turnoPendiente = null;
+  });
+
+  refs.formReserva.addEventListener("submit", enviarReserva);
+  document.querySelectorAll("[data-cerrar-reserva]").forEach((boton) => {
+    boton.addEventListener("click", () => refs.modalReserva.close());
+  });
+  refs.modalReserva.addEventListener("close", () => {
+    turnoConfirmado = null;
+  });
+
+  refs.btnMisReservas.addEventListener("click", renderMisReservas);
 
   refs.fecha.addEventListener("change", () => {
     if (!refs.fecha.value) return;
@@ -268,7 +396,7 @@ function init() {
   });
 
   console.info(
-    "Club Reservas · Sprint 1. Login disponible. Datos demo en localStorage. Usá el botón del pie para reiniciar."
+    "Club Reservas · Sprint 1. Login, grilla y reservas disponibles. Datos demo en localStorage. Usá el botón del pie para reiniciar."
   );
 }
 
