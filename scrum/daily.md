@@ -5,10 +5,10 @@
 
 ## Día 1 · 26/11/2026
 
-- **Diiego:** fijó el alcance del Sprint 1, probó el login y aprobó los merges de los PR #13 y #14.
-- **Hy4:** implementó HU-3 (login con número de socio y PIN) y HU-1 (tabs accesibles y grilla como tabpanel); PR #13 y #14 mergeados a `main`.
-- **OpenCode:** revisó ambos PR contra la DoD con pruebas en navegador real (13/13 y 28/28), documentó cada revisión en su PR y actualizó el tablero.
-- **Bloqueos:** ninguno. Siguiente: HU-2 (reservar un horario libre).
+- **Diiego:** fijó el alcance del Sprint 1, probó el login y la reserva, y aprobó los merges de los PR #13, #14 y #15.
+- **Hy4:** implementó HU-3 (login con número de socio y PIN), HU-1 (tabs accesibles y grilla como tabpanel) y HU-2 (confirmación, errores y "Mis reservas"); PR #13, #14 y #15 mergeados a `main`.
+- **OpenCode:** revisó los tres PR contra la DoD con pruebas en navegador real (13/13, 28/28 y 47/47), documentó cada revisión en su PR, verificó el deploy y actualizó el tablero.
+- **Bloqueos:** ninguno. Las tres historias del Sprint 1 están en producción (11/11 puntos). Siguiente: cerrar el Sprint 1 (review + retro) y planificar el Sprint 2.
 
 ## Día 2 · [fecha]
 

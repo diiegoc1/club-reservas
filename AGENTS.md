@@ -13,9 +13,9 @@ Es el Trabajo real 2 de Prácticas Profesionalizantes II: tres sprints con Scrum
 - **Sprint 0 completado:** repo, README, backlog, plantilla de issues, tablero, `scrum/` y esqueleto de `src/`.
 - **Issues creados:** #1 a #12, con labels (`historia`, `must`/`should`/`could`, `sprint-1..3` o `backlog`) y cargados en el tablero con **Puntos** y **Sprint**.
 - **Página publicada:** https://diiegoc1.github.io/club-reservas/ (GitHub Pages, workflow `deploy.yml`).
-- **Sprint 1 en curso:** login por número de socio, grilla de horarios y reserva con validación.
-- La grilla de `src/app.js` ya renderiza horarios y estados (libre, reservado, bloqueado) con datos demo.
-- Los modales de reserva y login son **stubs**: muestran un aviso. Hay que conectarlos a `src/store.js`.
+- **Sprint 1 completo:** login por número de socio, grilla accesible, reserva con confirmación y "Mis reservas" (PRs #13, #14 y #15).
+- La grilla de `src/app.js` renderiza horarios y estados (libre, reservado, bloqueado) con datos demo.
+- Los modales de login y reserva están conectados a `src/store.js`; "Mis reservas" solo lista (la cancelación es del Sprint 2).
 - `src/store.js` ya tiene la lógica de estado y las reglas de negocio. Revisala antes de cambiarla.
 
 ## 3. Reglas de trabajo
